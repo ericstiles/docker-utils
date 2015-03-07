@@ -3,11 +3,12 @@ For users of Docker.  This script has a basic set of utilities to manage large n
 
 # Usage
 ```
-USAGE ./removecontainers.sh [argument]
+USAGE ./container-utils.sh [argument]
   -a: list all containers
   -u: list running containers
   -f: keep first container, remove others
   -l: keep last container, remove others
+  -s: stop all running containers
 ```
 # TODO
 - Write tests

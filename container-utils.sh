@@ -6,6 +6,7 @@ echo "  -a: list all containers"
 echo "  -u: list running containers"
 echo "  -f: keep first container, remove others"
 echo "  -l: keep last container, remove others"
+echo "  -s: stop all running containers"
 }
 
 #default function to remove 'CONTAINER' which 
@@ -18,8 +19,8 @@ function removeheader(){
 function remove(){
  for i in "$@"
  do
-   echo "removing image: "$i
-   #docker rm $1
+   echo "removing container: "$i
+   docker rm $i
  done
 }
 
@@ -30,7 +31,7 @@ function listall(){
 
 #list running containers
 function listrunning(){
- docker ps | awk '{print $1}'
+ echo `docker ps | awk '{print $1}'`
 }
 
 #keep only first image from all containers
@@ -45,6 +46,15 @@ function keeplast(){
  echo ${_value% *}
 }
 
+#stop running containers
+function stop(){
+ for i in "$@"
+ do
+   echo "stop container: "$i
+   docker stop $i
+ done
+}
+
 #Confirm at least one argument is supplied 
 #otherwise exit with help message
 if [ -z $1 ]; then
@@ -52,7 +62,7 @@ if [ -z $1 ]; then
  exit
 fi
 
-while getopts ":aflu" opt; do
+while getopts ":aflsu" opt; do
   case ${opt} in
     a)
       #list all containers
@@ -77,7 +87,12 @@ while getopts ":aflu" opt; do
        _value=$(removeheader $_value)
        _value=$(keeplast $_value)
        remove $_value
-       #echo $_value
+      ;;
+     s)
+       #stop all running containers
+       _value=$(listrunning)
+       _value=$(removeheader $_value)
+       stop $_value
       ;;
     \?)
       echo "Invalid option: -$OPTARG" >&2
