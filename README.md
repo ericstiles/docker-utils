@@ -10,6 +10,6 @@ USAGE ./removecontainers.sh [argument]
   -l: keep last container, remove others
 ```
 # TODO
--Write tests
--Create script for managing images
+- Write tests
+- Create script for managing images
 
